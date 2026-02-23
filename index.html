@@ -1,47 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Holi AR Test</title>
+  <meta charset="UTF-8" />
+  <title>Holi AR Red Test</title>
 
-  <!-- Compatible versions -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/build/three.min.js"></script>
+  <!-- MindAR (includes Three.js internally) -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
 
   <style>
     body { margin: 0; overflow: hidden; }
-    #ar-container { width: 100vw; height: 100vh; position: relative; }
   </style>
 </head>
 
 <body>
-  <div id="ar-container"></div>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
 
-  <script>
-    const start = async () => {
-      const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-        container: document.querySelector("#ar-container"),
-        imageTargetSrc: "./target.mind",
-      });
+  const mindarThree = new window.MINDAR.IMAGE.MindARThree({
+    container: document.body,
+    imageTargetSrc: "./target.mind",   // ensure this file exists in root
+  });
 
-      const {renderer, scene, camera} = mindarThree;
+  const { renderer, scene, camera } = mindarThree;
 
-      const anchor = mindarThree.addAnchor(0);
+  // Anchor for first target (index 0)
+  const anchor = mindarThree.addAnchor(0);
 
-      const geometry = new THREE.PlaneGeometry(1, 1.5);
-      const texture = new THREE.TextureLoader().load("./overlay.png");
-      const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-      const plane = new THREE.Mesh(geometry, material);
+  // 🔴 Red rectangle plane
+  const geometry = new THREE.PlaneGeometry(1, 1);
+  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const plane = new THREE.Mesh(geometry, material);
 
-      anchor.group.add(plane);
+  anchor.group.add(plane);
 
-      await mindarThree.start();
-      renderer.setAnimationLoop(() => {
-        renderer.render(scene, camera);
-      });
-    };
+  // Start AR
+  await mindarThree.start();
 
-    start();
-  </script>
+  renderer.setAnimationLoop(() => {
+    renderer.render(scene, camera);
+  });
+
+});
+</script>
 </body>
 </html>

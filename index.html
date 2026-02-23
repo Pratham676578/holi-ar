@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+navigator.mediaDevices.getUserMedia({ video: true })
+.then(stream => {
+  document.body.innerHTML = "Camera working ✅";
+})
+.catch(err => {
+  document.body.innerHTML = "Camera blocked ❌";
+  console.log(err);
+});
+</script>
+</body>
+</html>
